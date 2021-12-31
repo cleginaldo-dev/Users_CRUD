@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 
-import { ShowUserProfileUseCase } from "./ShowUserProfileUseCase";
+import { IRequest, ShowUserProfileUseCase } from "./ShowUserProfileUseCase";
 
 class ShowUserProfileController {
   constructor(private showUserProfileUseCase: ShowUserProfileUseCase) {}
-
-  handle(request: Request, response: Response): Response {
-    // Complete aqui
+  async handle(request: Request, response: Response): Promise<Response> {
+    const { user_id } = request.params;
+    const user = await this.showUserProfileUseCase.execute({
+      user_id,
+    } as IRequest);
+    return response.json(user);
   }
 }
-
 export { ShowUserProfileController };

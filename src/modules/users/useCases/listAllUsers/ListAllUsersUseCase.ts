@@ -1,16 +1,28 @@
-import { User } from "../../model/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import {
+  IListAllReturn,
+  IUsersRepository,
+} from "../../repositories/IUsersRepository";
 
-interface IRequest {
-  user_id: string;
+export interface IRequest {
+  name?: string;
+  initial_date?: Date;
+  final_date?: Date;
 }
 
 class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
-  execute({ user_id }: IRequest): User[] {
-    // Complete aqui
+  public async execute({
+    name,
+    initial_date,
+    final_date,
+  }: IRequest): Promise<IListAllReturn> {
+    const allUsers = await this.usersRepository.list({
+      name,
+      initial_date,
+      final_date,
+    });
+    return allUsers;
   }
 }
-
 export { ListAllUsersUseCase };

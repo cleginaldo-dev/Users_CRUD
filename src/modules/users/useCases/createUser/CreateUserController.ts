@@ -1,13 +1,20 @@
-import { Response, Request } from "express";
+import { hash } from "bcryptjs";
+import { Request, Response } from "express";
 
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 class CreateUserController {
-  constructor(private createUserUseCase: CreateUserUseCase) {}
+  constructor(private createUserUserCase: CreateUserUseCase) {}
 
-  handle(request: Request, response: Response): Response {
-    // Complete aqui
+  async handle(request: Request, response: Response): Promise<Response> {
+    const { name, email, password } = request.body;
+    const passwordHash = await hash(password, 8);
+    const createdUser = await this.createUserUserCase.execute({
+      name,
+      email,
+      password: passwordHash,
+    });
+    return response.status(201).json(createdUser);
   }
 }
-
 export { CreateUserController };

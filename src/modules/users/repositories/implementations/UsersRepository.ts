@@ -1,41 +1,100 @@
-import { User } from "../../model/User";
-import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
+import { formatInTimeZone } from "date-fns-tz";
+import { getRepository, Repository } from "typeorm";
+
+import { User } from "../../../../entities/User";
+import {
+  ICreateUserDTO,
+  IListAllParams,
+  IListAllReturn,
+  IUsersRepository,
+} from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
-  private users: User[];
+  private ormRepository: Repository<User>;
 
   private static INSTANCE: UsersRepository;
 
-  private constructor() {
-    this.users = [];
+  constructor() {
+    this.ormRepository = getRepository(User);
   }
 
   public static getInstance(): UsersRepository {
     if (!UsersRepository.INSTANCE) {
       UsersRepository.INSTANCE = new UsersRepository();
     }
-
     return UsersRepository.INSTANCE;
   }
 
-  create({ name, email }: ICreateUserDTO): User {
-    // Complete aqui
+  public async create({
+    name,
+    email,
+    password,
+  }: ICreateUserDTO): Promise<User> {
+    const user = this.ormRepository.create({ name, email, password });
+    await this.ormRepository.save(user);
+    return user;
   }
 
-  findById(id: string): User | undefined {
-    // Complete aqui
+  public async findById(id: string): Promise<User> {
+    const user = await this.ormRepository.findOne({ where: { id } });
+    return user;
+  }
+  public async findByEmail(email: string): Promise<User> {
+    const user = await this.ormRepository.findOne({ where: { email } });
+    return user;
   }
 
-  findByEmail(email: string): User | undefined {
-    // Complete aqui
+  public async save(receivedUser: User): Promise<User> {
+    return this.ormRepository.save(receivedUser);
   }
 
-  turnAdmin(receivedUser: User): User {
-    // Complete aqui
+  public async list(params?: IListAllParams): Promise<IListAllReturn> {
+    const queryBuilder = this.ormRepository
+      .createQueryBuilder("users")
+      .orderBy("users.name", "DESC");
+    if (params) {
+      if (params.name) {
+        queryBuilder.andWhere("users.name LIKE :name", {
+          name: `%${params.name}%`,
+        });
+      }
+      if (params.initial_date) {
+        const initialDate = formatInTimeZone(
+          params.initial_date,
+          "UTC",
+          "yyyy-MM-dd"
+        );
+
+        queryBuilder.andWhere("users.created_at >= :initial_date", {
+          initial_date: initialDate,
+        });
+      }
+
+      if (params.final_date) {
+        const finalDate = formatInTimeZone(
+          params.final_date,
+          "UTC",
+          "yyyy-MM-dd'T'23:59:59"
+        );
+
+        queryBuilder.andWhere("users.created_at <= :final_date", {
+          final_date: finalDate,
+        });
+      }
+    }
+    const data = await queryBuilder.getMany();
+    const total = await queryBuilder.getCount();
+
+    return { total, data };
   }
 
-  list(): User[] {
-    // Complete aqui
+  public async delete(id: string): Promise<number> {
+    const queryBuilder = this.ormRepository
+      .createQueryBuilder("users")
+      .orderBy("users.name", "DESC");
+    await this.ormRepository.delete(id);
+    const total = await queryBuilder.getCount();
+    return total;
   }
 }
 
