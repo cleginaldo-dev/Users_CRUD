@@ -20,7 +20,7 @@ usersRoutes.post("/", ensureAuthenticated, (request, response) =>
   createUserController.handle(request, response)
 );
 
-usersRoutes.patch("/:user_id/admin", ensureAuthenticated, (request, response) =>
+usersRoutes.patch("/admin/:user_id", ensureAuthenticated, ensureAdmin, (request, response) =>
   turnUserAdminController.handle(request, response)
 );
 

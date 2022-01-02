@@ -7,14 +7,14 @@ export async function ensureAdmin(
   response: Response,
   next: NextFunction
 ): Promise<void | Response> {
-  const { user_id } = request;
+  const { logged_user_id } = request;
   const usersRepository = UsersRepository.getInstance();
-  const { admin } = await usersRepository.findById(user_id);
+  const { admin } = await usersRepository.findById(logged_user_id);
 
   if (admin) {
     return next();
   }
   return response.status(401).json({
-    error: "Usuário não é administrador e portanto não tem permissão!",
+    error: "O usuário logado não tem permissão de administrador!",
   });
 }

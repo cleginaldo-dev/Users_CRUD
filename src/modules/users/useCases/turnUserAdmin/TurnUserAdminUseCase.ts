@@ -6,7 +6,7 @@ export interface IRequest {
   user_id: string;
 }
 class TurnUserAdminUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) { }
 
   async execute({ user_id }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
@@ -14,7 +14,7 @@ class TurnUserAdminUseCase {
       throw new AppError("Usuário não existe!");
     }
     if (user.admin) {
-      throw new AppError("O usuário Já é administrador!");
+      throw new AppError("O usuário Já é um administrador!");
     }
 
     Object.assign(user, {

@@ -26,7 +26,7 @@ export function ensureAuthenticated(
       "6a204bd89f3c8348afd5c77c717a097a"
     ) as IPayload;
 
-    request.user_id = sub;
+    request.logged_user_id = sub;
     return next();
   } catch (error) {
     return response.status(401).end();
