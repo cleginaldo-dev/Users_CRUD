@@ -4,6 +4,7 @@ import { sign } from "jsonwebtoken";
 import { User } from "../../../../entities/User";
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { instanceToPlain } from "class-transformer";
 
 interface IAuthUserRequest {
   email: string;
@@ -40,7 +41,7 @@ class AuthUserUseCase {
         expiresIn: "1d",
       }
     );
-    return { token, user };
+    return instanceToPlain({ token, user }) as any;
   }
 }
 export { AuthUserUseCase };

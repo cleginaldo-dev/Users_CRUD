@@ -1,3 +1,4 @@
+import { instanceToPlain } from "class-transformer";
 import {
   IListAllReturn,
   IUsersRepository,
@@ -22,7 +23,7 @@ class ListAllUsersUseCase {
       initial_date,
       final_date,
     });
-    return allUsers;
+    return instanceToPlain(allUsers) as IListAllReturn;
   }
 }
 export { ListAllUsersUseCase };

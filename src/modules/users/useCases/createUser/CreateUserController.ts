@@ -1,7 +1,7 @@
 import { hash } from "bcryptjs";
 import { Request, Response } from "express";
-
 import { CreateUserUseCase } from "./CreateUserUseCase";
+import { instanceToPlain } from 'class-transformer';
 
 class CreateUserController {
   constructor(private createUserUserCase: CreateUserUseCase) {}
@@ -14,7 +14,7 @@ class CreateUserController {
       email,
       password: passwordHash,
     });
-    return response.status(201).json(createdUser);
+    return response.status(201).json(instanceToPlain(createdUser));
   }
 }
 export { CreateUserController };

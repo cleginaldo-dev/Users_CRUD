@@ -6,7 +6,7 @@ import {
   ICreateUserDTO,
   IListAllParams,
   IListAllReturn,
-  IUsersRepository,
+  IUsersRepository,  
 } from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {

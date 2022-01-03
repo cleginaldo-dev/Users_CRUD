@@ -1,2 +1,16 @@
-node_modules
+.database.sqlite
 .vscode
+node_modules
+dist
+coverage
+logs
+tmp/uploads
+.env
+ormconfig.json
+**/*.data.json
+.DS_Store
+
+# managed by open-wa
+**.data.json
+**.node-persist**
+# end managed by open-wa

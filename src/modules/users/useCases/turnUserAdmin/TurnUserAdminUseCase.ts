@@ -1,12 +1,13 @@
 import { User } from "../../../../entities/User";
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { instanceToPlain } from 'class-transformer';
 
 export interface IRequest {
   user_id: string;
 }
 class TurnUserAdminUseCase {
-  constructor(private usersRepository: IUsersRepository) { }
+  constructor(private usersRepository: IUsersRepository) {}
 
   async execute({ user_id }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
@@ -23,7 +24,7 @@ class TurnUserAdminUseCase {
     });
 
     const userAdmin = await this.usersRepository.save(user);
-    return userAdmin;
+    return instanceToPlain(userAdmin) as User;
   }
 }
 export { TurnUserAdminUseCase };

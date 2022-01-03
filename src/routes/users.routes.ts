@@ -16,7 +16,7 @@ usersRoutes.post("/login", (request, response) =>
   authUserController.handle(request, response)
 );
 
-usersRoutes.post("/", ensureAuthenticated, (request, response) =>
+usersRoutes.post("/",  (request, response) =>
   createUserController.handle(request, response)
 );
 
