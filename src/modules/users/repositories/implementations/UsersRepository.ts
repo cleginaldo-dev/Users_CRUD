@@ -6,12 +6,13 @@ import {
   ICreateUserDTO,
   IListAllParams,
   IListAllReturn,
-  IUsersRepository,  
+  IUsersRepository,
 } from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
+  // eslint-disable-next-line no-use-before-define
   private static INSTANCE: UsersRepository;
 
   constructor() {
@@ -62,7 +63,7 @@ class UsersRepository implements IUsersRepository {
         const initialDate = formatInTimeZone(
           params.initial_date,
           "UTC",
-          "yyyy-MM-dd"
+          "yyyy-MM-dd",
         );
 
         queryBuilder.andWhere("users.created_at >= :initial_date", {
@@ -74,7 +75,7 @@ class UsersRepository implements IUsersRepository {
         const finalDate = formatInTimeZone(
           params.final_date,
           "UTC",
-          "yyyy-MM-dd'T'23:59:59"
+          "yyyy-MM-dd'T'23:59:59",
         );
 
         queryBuilder.andWhere("users.created_at <= :final_date", {

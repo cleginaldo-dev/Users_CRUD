@@ -1,10 +1,10 @@
 import { compare } from "bcryptjs";
+import { instanceToPlain } from "class-transformer";
 import { sign } from "jsonwebtoken";
 
 import { User } from "../../../../entities/User";
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { instanceToPlain } from "class-transformer";
 
 interface IAuthUserRequest {
   email: string;
@@ -16,7 +16,7 @@ interface IResponse {
 }
 
 class AuthUserUseCase {
-  constructor(private usersRepository: IUsersRepository) { }
+  constructor(private usersRepository: IUsersRepository) {}
 
   public async execute({
     email,
@@ -39,9 +39,9 @@ class AuthUserUseCase {
       {
         subject: user.id,
         expiresIn: "1d",
-      }
+      },
     );
-    return instanceToPlain({ token, user }) as any;
+    return instanceToPlain({ token, user }) as IResponse;
   }
 }
 export { AuthUserUseCase };

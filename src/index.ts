@@ -19,7 +19,7 @@ app.use(
     }
 
     return response.status(500).json({ error: err.message });
-  }
+  },
 );
 
 app.listen(3333, () => console.log("Server is running!"));

@@ -1,7 +1,8 @@
+import { instanceToPlain } from "class-transformer";
+
 import { User } from "../../../../entities/User";
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { instanceToPlain } from 'class-transformer';
 
 export interface IRequest {
   user_id: string;

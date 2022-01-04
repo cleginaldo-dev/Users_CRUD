@@ -12,7 +12,7 @@ export interface IRequest {
 }
 
 class UpdateUserUseCase {
-  constructor(private usersRepository: IUsersRepository) { }
+  constructor(private usersRepository: IUsersRepository) {}
   async execute({
     user_id,
     logged_user_id,
@@ -29,7 +29,9 @@ class UpdateUserUseCase {
     const loggedUser = await this.usersRepository.findById(logged_user_id);
 
     if (!user.admin && admin && !loggedUser.admin) {
-      throw new AppError("O usuário logado não tem permissão para tornar o usuário editado em admin!");
+      throw new AppError(
+        "O usuário logado não tem permissão para tornar o usuário editado em admin!",
+      );
     }
 
     const emailExists = await this.usersRepository.findByEmail(email);

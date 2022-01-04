@@ -1,7 +1,8 @@
 import { hash } from "bcryptjs";
+import { instanceToPlain } from "class-transformer";
 import { Request, Response } from "express";
+
 import { CreateUserUseCase } from "./CreateUserUseCase";
-import { instanceToPlain } from 'class-transformer';
 
 class CreateUserController {
   constructor(private createUserUserCase: CreateUserUseCase) {}

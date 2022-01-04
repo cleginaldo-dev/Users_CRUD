@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 class UpdateUserController {
-  constructor(private updateUserUseCase: UpdateUserUseCase) { }
+  constructor(private updateUserUseCase: UpdateUserUseCase) {}
   async handle(request: Request, response: Response): Promise<Response> {
     const { logged_user_id } = request;
     const { name, email, password, admin } = request.body;
